@@ -182,12 +182,19 @@ body {
   width: 100%;
   max-width: 260px;
   height: auto;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   display: block;
   object-fit: contain;
-  margin-bottom: 16px;
+  margin: 0 auto 16px auto;
+  background: transparent;
+  /* 
+   Advanced CSS Blending:
+   1. contrast(3) forces any off-white JPEG artifacts to pure white
+   2. invert(1) turns pure white bg -> pure black
+   3. hue-rotate(180deg) restores the brand colors
+   4. screen blend mode makes the pure black background 100% invisible!
+  */
+  filter: contrast(3) invert(1) hue-rotate(180deg) brightness(2);
+  mix-blend-mode: screen;
 }
 
 .auth-headline {

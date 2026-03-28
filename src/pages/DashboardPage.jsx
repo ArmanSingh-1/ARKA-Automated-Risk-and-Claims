@@ -46,7 +46,7 @@ export default function DashboardPage() {
       {/* Top bar */}
       <div className="dashboard-topbar">
         <div className="arka-logo">
-          <img src="/logo.png" alt="ARKA" style={{ width: 110, height: 'auto', borderRadius: 4, display: 'block' }} />
+          <img src="/logo.png" alt="ARKA" style={{ width: 110, height: 'auto', display: 'block', filter: 'invert(1) hue-rotate(180deg) brightness(1.8)', mixBlendMode: 'screen' }} />
         </div>
         <button className="btn-ghost dashboard-signout" onClick={handleSignOut}>
           <LogOut size={14} />
