@@ -61,12 +61,30 @@ async def lifespan(app: FastAPI):
     """Startup and shutdown logic."""
     global scheduler, ping_thread
 
-    # 1. Validate ML artifacts are loaded
+    # 1. Validate ML artifacts are loaded — auto-generate if missing
     from app.services.risk_assessment import global_model, global_scaler
     if global_model and global_scaler:
         logger.info("✅ ML artifacts (SGD model + scaler) loaded successfully.")
     else:
-        logger.warning("⚠️  ML artifacts missing — run scripts/train_global_model.py first.")
+        logger.warning("⚠️  ML artifacts missing — auto-generating...")
+        import subprocess
+        try:
+            subprocess.run([
+                "python", 
+                os.path.join(os.path.dirname(__file__), "scripts", "train_global_model.py")
+            ], check=True, timeout=120)
+            # Reload artifacts after training
+            from importlib import reload
+            import app.services.risk_assessment as risk_module
+            reload(risk_module)
+            global_model = risk_module.global_model
+            global_scaler = risk_module.global_scaler
+            if global_model and global_scaler:
+                logger.info("✅ ML artifacts auto-generated and loaded successfully!")
+            else:
+                logger.error("❌ Auto-generation failed")
+        except Exception as e:
+            logger.error(f"❌ Failed to auto-generate ML artifacts: {e}")
 
     # 2. Validate Supabase connection
     try:
