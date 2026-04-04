@@ -239,7 +239,19 @@ def predict_user(data: dict):
         )
         # Risk score: higher predicted income = lower risk
         weekly_income = float(data.get("weekly_income") or predicted)
-        risk_score = min(100, max(0, round(100 - (weekly_income / 25000) * 100 + 30)))
+        # Better formula: income threshold for low risk is ₹15,000
+        # Below ₹5,000 = 100 (very high risk)
+        # ₹15,000+ = 20 (low risk)
+        # Scale linearly in between
+        if weekly_income < 5000:
+            risk_score = 100
+        elif weekly_income >= 15000:
+            risk_score = 20
+        else:
+            # Linear scale from 100 (at ₹5k) to 20 (at ₹15k)
+            risk_score = round(100 - ((weekly_income - 5000) / 10000) * 80)
+        
+        risk_score = min(100, max(0, risk_score))
         # Premium tier: low risk = 1%, medium = 2%, high = 3%
         premium_tier = 1 if risk_score < 35 else (2 if risk_score < 65 else 3)
         return {
