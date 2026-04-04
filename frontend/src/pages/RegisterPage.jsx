@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { supabase, FRONTEND_URL } from '../lib/supabase'
+import { supabase, FRONTEND_URL, REQUIRE_EMAIL_VERIFICATION } from '../lib/supabase'
 import {
   Shield, Mail, Lock, Eye, EyeOff, User, Phone,
   AlertCircle, ArrowRight, CheckCircle2, ChevronLeft,
@@ -137,9 +137,15 @@ export default function RegisterPage() {
         onboarding_complete: true,
       }))
 
-      // 3. Go to the email-verification waiting page
+      // 3. Go to the email-verification waiting page or skip if not required
       setSignupCooldown(30) // 30 second cooldown before can signup again
-      navigate('/verify-email', { state: { email: email.trim().toLowerCase() } })
+      
+      if (REQUIRE_EMAIL_VERIFICATION) {
+        navigate('/verify-email', { state: { email: email.trim().toLowerCase() } })
+      } else {
+        // Dev mode: auto-proceed to dashboard (email not required)
+        navigate('/dashboard', { replace: true })
+      }
     } catch (err) {
       const msg = err.message || 'Registration failed. Please try again.'
       if (msg.includes('already registered') || msg.includes('already exists')) {
