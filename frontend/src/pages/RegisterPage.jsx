@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { supabase, FRONTEND_URL } from '../lib/supabase'
 import {
   Shield, Mail, Lock, Eye, EyeOff, User, Phone,
   AlertCircle, ArrowRight, CheckCircle2, ChevronLeft,
@@ -106,7 +106,7 @@ export default function RegisterPage() {
         password,
         options: {
           data: { full_name: fullName.trim(), phone: phone.trim() },
-          emailRedirectTo: window.location.origin + '/dashboard',
+          emailRedirectTo: FRONTEND_URL + '/dashboard',
         }
       })
       if (signUpError) throw signUpError
