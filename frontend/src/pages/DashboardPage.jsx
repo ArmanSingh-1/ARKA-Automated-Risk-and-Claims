@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { supabase, API_URL } from '../lib/supabase'
 import {
   Shield, CheckCircle2, LogOut, CloudRain, Activity,
   IndianRupee, MapPin, ChevronRight, RefreshCw,
   AlertTriangle, FileText, LayoutDashboard, Wifi
 } from 'lucide-react'
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
+const BACKEND = API_URL
 
 const getRiskColor = s => s < 35 ? '#22c55e' : s < 65 ? '#f59e0b' : '#ef4444'
 const getRiskLabel = s => s < 35 ? 'Low Risk' : s < 65 ? 'Moderate Risk' : 'High Risk'

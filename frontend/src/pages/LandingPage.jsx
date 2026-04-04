@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { API_URL } from '../lib/supabase'
 import {
   Shield, ArrowRight, ChevronDown, Activity, CloudRain,
   Thermometer, Wind, AlertTriangle, Waves, Lock, MapPin,
   CheckCircle2, Clock
 } from 'lucide-react'
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
+const BACKEND = API_URL
 
 const TRIGGERS = [
   { Icon: CloudRain,     title: 'Heavy Rainfall',    threshold: '> 15mm in 3 hours',       level: 'Red',    color: '#60a5fa', pct: 100,
