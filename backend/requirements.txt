@@ -3,7 +3,7 @@ uvicorn[standard]==0.27.0
 supabase==2.8.0
 python-dotenv==1.0.1
 joblib==1.4.0
-numpy==2.0.0
+numpy==1.26.4
 apscheduler==3.10.4
 requests==2.32.0
-pydantic==2.7.0
+pydantic==2.7.1
